@@ -9,15 +9,15 @@ namespace Examen3EV
 {
     // Clase que construye un diccionario de palabras a partir de dos frases
     // El dicionario estará ordenado alfabéticamente
-    internal class Diccionario
+    public class Diccionario
     {
-        public List<String> words;
-        public int wordcount;
+        public List<String> palabras;
+        public int conteoPalabras;
 
         public Diccionario()
         {
-            words=new List<String>();
-            wordcount=0;
+            palabras = new List<String>();
+            conteoPalabras = 0;
         }
 
         // Método que analiza las frases
@@ -28,49 +28,71 @@ namespace Examen3EV
         // -2: la segunda cadena no es válida
         // 0: operación correcta
         //
-        public int analizar(String f1, String f2)
+        public string ERROR_CADENA_NO_VALIDA = "La cadena está vacía";
+        /// <summary>
+        /// Función que analiza dos frases introducidas por el usuarioque comprueba si son correctas y las devuelve ordenadas
+        /// </summary>
+        /// <param name="frase">Se corresponde con la  frase que le introducirá el usuario por formulario</param>
+        /// <param name="fraseDos">Se corresponde con la segunda frase que le introducirá el usuario por formulario</param>
+        /// <returns> Devolverá si es correcta o no</returns>
+        /// <exception cref="Exception">Excepción que devuelve un error por cadena vacía o nula</exception>
+        public int Analizar(String frase, String fraseDos)
         {
-            String word;
-            words.Clear();
-            wordcount=0;
+            String palabra;
+            int posicionInexistente = -1;
+            palabras.Clear();
+            conteoPalabras = 0;
             // primer paso, analizar la primera cadena
-            if (f1!=null || f1.Length==0) return -1;
+ 
+            if (frase == null || frase.Length == 0) 
+            {
+                throw new Exception(ERROR_CADENA_NO_VALIDA);
+            }
 
-            int posini=0;
-            int posfin=f1.IndexOf(' '); // encontramos el primer espacio
-            while (posfin!=-1) {
-                word=f1.Substring(posini,posfin-posini);
-                if (word.Length>0 && !words.Contains(word)) {
-                    words.Add(word);
-                    wordcount++;
+
+            int posicionInicial = 0;
+            int posicionFinal = frase.IndexOf(' '); // encontramos el primer espacio
+
+            while (posicionFinal != posicionInexistente) {
+                palabra = frase.Substring(posicionInicial,posicionFinal-posicionInicial);
+                if (palabra.Length>0 && !palabras.Contains(palabra)) {
+                    palabras.Add(palabra);
+                    conteoPalabras++;
                 }
-                posini = posfin + 1;
-                posfin = f1.IndexOf(' ', posini);
+                posicionInicial = posicionFinal + 1;
+                posicionFinal = frase.IndexOf(' ', posicionInicial);
             }
             // añadimos la última palabra
-            word =f1.Substring(posini,f1.Length-posini);
-            words.Add(word);
-            wordcount++;
+            palabra = frase.Substring(posicionInicial,frase.Length-posicionInicial);
+            palabras.Add(palabra);
+            conteoPalabras++;
+
+            posicionInicial = 0;
+            posicionFinal = fraseDos.IndexOf(' '); // encontramos el segundo espacio
 
             // segundo paso, analizar la segunda cadena
-            if (f2!=null || f2.Length==0) return -2;
-
-            while (posfin!=-1) {
-                word=f2.Substring(posini,posfin-posini);
-                if (word.Length>0 && !words.Contains(word)) {
-                    words.Add(word);
-                    wordcount++;
+            ///<exception cref="Exception">La excepción se la lanzará si la frase dos es vacía o nula</exception>
+            if (fraseDos == null || fraseDos.Length == 0)
+            {
+                throw new Exception(ERROR_CADENA_NO_VALIDA);
+            }
+            ///<summary>Mientras la posición final exista en la lista las irá colocando</summary>
+            while (posicionFinal != posicionInexistente) {
+                palabra = fraseDos.Substring(posicionInicial,posicionFinal-posicionInicial);
+                if (palabra.Length > 0 && !palabras.Contains(palabra)) {
+                    palabras.Add(palabra);
+                    conteoPalabras++;
                 }
-                posini = posfin + 1;
-                posfin = f2.IndexOf(' ', posini);
+                posicionInicial = posicionFinal + 1;
+                posicionFinal = fraseDos.IndexOf(' ', posicionInicial);
             }
             // añadimos la última palabra
-            word = f2.Substring(posini, f2.Length - posini);
-            words.Add(word);
-            wordcount++;
+            palabra = fraseDos.Substring(posicionInicial, fraseDos.Length - posicionInicial);
+            palabras.Add(palabra);
+            conteoPalabras++;
 
             // tercer paso, Ordenar las palabras
-            words.Sort();
+            palabras.Sort();
             return 0;
         }
     }

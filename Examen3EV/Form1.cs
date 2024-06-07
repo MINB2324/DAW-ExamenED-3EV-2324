@@ -20,11 +20,11 @@ namespace Examen3EV
         private void button1_Click(object sender, EventArgs e)
         {
             Diccionario diccionario= new Diccionario();
-            int resultado = diccionario.analizar(txtFrase1.Text, txtFrase2.Text);
+            int resultado = diccionario.Analizar(txtFrase1.Text, txtFrase2.Text);
             if (resultado == 0)
             {
-                for (int i = 0; i < diccionario.words.Count; i++)
-                    txtDiccionario.Text += diccionario.words[i] + Environment.NewLine;
+                for (int i = 0; i < diccionario.palabras.Count; i++)
+                    txtDiccionario.Text += diccionario.palabras[i] + Environment.NewLine;
             }
             else if (resultado == -1)
                 MessageBox.Show("La frase 1 no es correcta");
